@@ -15,6 +15,18 @@ function finish(payload) {
   });
 }
 
+function flagEmoji(countryCode) {
+  if (!countryCode || countryCode.length !== 2) return "";
+
+  const code = countryCode.toUpperCase();
+  const first = code.charCodeAt(0);
+  const second = code.charCodeAt(1);
+
+  if (first < 65 || first > 90 || second < 65 || second > 90) return "";
+
+  return String.fromCodePoint(first + 127397, second + 127397);
+}
+
 try {
   if (typeof $response === "undefined" || !$response) {
     finish({
@@ -45,15 +57,17 @@ try {
 
   const ip = data.query || "";
   const country = data.country || "未知国家";
+  const flag = flagEmoji(data.countryCode || "");
   const city = data.city || "未知城市";
   const isp = data.isp || "未知运营商";
   const org = data.org || "";
+  const countryName = `${flag ? `${flag} ` : ""}${country}`;
 
-  const title = country;
+  const title = countryName;
   const subtitle = `${city} ${isp}`.trim();
 
   const description = [
-    `国家：${country}`,
+    `国家：${countryName}`,
     `城市：${city}`,
     `运营商：${isp}`,
     `数据中心：${org}`
