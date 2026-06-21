@@ -45,29 +45,18 @@ try {
 
   const ip = data.query || "";
   const country = data.country || "未知国家";
-  const region = data.regionName || "";
   const city = data.city || "未知城市";
   const isp = data.isp || "未知运营商";
   const org = data.org || "";
-  const asn = data.as || "";
-  const timezone = data.timezone || "";
-  const lat = data.lat;
-  const lon = data.lon;
 
-  const title = `${country}${city ? ` · ${city}` : ""}`;
-  const subtitleParts = [isp, asn].filter(Boolean);
-  const subtitle = subtitleParts.join(" · ");
+  const title = country;
+  const subtitle = `${city} ${isp}`.trim();
 
   const description = [
-    ip ? `IP：${ip}` : "",
     `国家：${country}`,
-    region ? `地区：${region}` : "",
     `城市：${city}`,
     `运营商：${isp}`,
-    org ? `组织：${org}` : "",
-    asn ? `ASN：${asn}` : "",
-    timezone ? `时区：${timezone}` : "",
-    lat !== undefined && lon !== undefined ? `坐标：${lat}, ${lon}` : ""
+    `数据中心：${org}`
   ].filter(Boolean).join("\n");
 
   finish({ title, subtitle, ip, description });
